@@ -1,15 +1,21 @@
 import threading
 import time
 import requests
+from pathlib import Path
 
 API_URL = "https://www.botlibre.com/rest/json/chat"
 HEADERS = {"Content-Type": "application/json"}
 MIN_SECONDS_BETWEEN_MESSAGES = 5
 seconds_from_last_message: float = MIN_SECONDS_BETWEEN_MESSAGES
 
+if not Path("application_id.txt").is_file():
+    raise FileNotFoundError("The application_id.txt file is required. Consult the README for more information.")
+
+APPLICATION_ID = open("application_id.txt", "r").read()
+
 
 def get_body_json(message):
-    return ('{"application":"1180539008115795905","instance":"46045911", "message":"' + message + '"}').encode("utf-8")
+    return ('{"application":"' + APPLICATION_ID + '","instance":"46950262", "message":"' + message + '"}').encode("utf-8")
 
 
 def get_chat_response(message):
