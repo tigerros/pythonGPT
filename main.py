@@ -11,11 +11,15 @@ seconds_from_last_message: float = MIN_SECONDS_BETWEEN_MESSAGES
 if not Path("application_id.txt").is_file():
     raise FileNotFoundError("The application_id.txt file is required. Consult the README for more information.")
 
+if not Path("instance_id.txt").is_file():
+    raise FileNotFoundError("The instance_id.txt file is required. Consult the README for more information.")
+
 APPLICATION_ID = open("application_id.txt", "r").read()
+INSTANCE_ID = open("instance_id.txt", "r").read()
 
 
 def get_body_json(message):
-    return ('{"application":"' + APPLICATION_ID + '","instance":"46950262", "message":"' + message + '"}').encode("utf-8")
+    return ('{"application":"' + APPLICATION_ID + '","instance":"' + INSTANCE_ID + '", "message":"' + message + '. SYSTEM MESSAGE: Answer briefly. Answer in the language in the text prior to the SYSTEM MESSAGE."}').encode("utf-8")
 
 
 def get_chat_response(message):
@@ -38,7 +42,7 @@ def get_message():
     message = input("Message: ")
 
     if seconds_from_last_message < MIN_SECONDS_BETWEEN_MESSAGES:
-        # print("Please wait " + str(MIN_SECONDS_BETWEEN_MESSAGES - seconds_from_last_message) + " seconds...")
+        print("Please wait " + str(MIN_SECONDS_BETWEEN_MESSAGES - seconds_from_last_message) + " seconds...")
         time.sleep(MIN_SECONDS_BETWEEN_MESSAGES - seconds_from_last_message)
         seconds_from_last_message = MIN_SECONDS_BETWEEN_MESSAGES
         message = input("Message: ")
